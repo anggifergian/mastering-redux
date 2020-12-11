@@ -1,9 +1,8 @@
-import store from './createStore'
-import * as actions from './redux/actions'
+import store from './store/store'
+import * as actions from './store/bugs/actions'
 
-store.subscribe(() => {
-  console.log('Store changed!')
-})
 store.dispatch(actions.bugAdded('Bug 1'))
+store.dispatch(actions.bugAdded('Bug 1'))
+store.dispatch(actions.bugResolved(1))
 
 console.log(store.getStore())

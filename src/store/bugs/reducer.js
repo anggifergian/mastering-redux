@@ -22,15 +22,3 @@ export default function reducer(state = [], action) {
       return state
   }
 }
-
-const initialState = {
-  username: '',
-  password: '',
-}
-
-function userReducer(state = initialState, action) {
-  switch (action.type) {
-    case 'DATA_ONCHANGE':
-      return {}
-  }
-}
