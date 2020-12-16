@@ -1,15 +1,32 @@
-// import store from './store/store'
-import * as actions from './store/bugs/actions'
-import { bugAdded } from './store/bugs/bugs'
 import configureStore from './store/configureStore'
-import { projectAdded } from './store/projects'
+import { userAdded } from './store/users'
+import {
+  bugAdded,
+  bugResolved,
+  bugAssignToUser,
+  getBugsByUser,
+} from './store/bugs'
 
+// Setup store
 const store = configureStore()
-store.dispatch(projectAdded({ name: 'Project 1' }))
-store.dispatch(projectAdded({ name: 'Project 2' }))
+store.subscribe(() => {
+  console.log('Store changed!')
+})
 
-// store.dispatch(actions.bugAdded('Bug 1'))
-// store.dispatch(actions.bugAdded('Bug 2'))
-// store.dispatch(actions.bugResolved(1))
+// Users
+store.dispatch(userAdded({ name: 'Anggi' }))
+store.dispatch(userAdded({ name: 'Samsul' }))
 
-console.log(store.getState())
+// Bugs
+store.dispatch(bugAdded({ description: 'Bug 1' }))
+store.dispatch(bugAdded({ description: 'Bug 2' }))
+store.dispatch(bugAdded({ description: 'Bug 3' }))
+store.dispatch(bugAssignToUser({ bugId: 1, userId: 1 }))
+store.dispatch(bugResolved({ id: 1 }))
+
+// State
+const state = store.getState()
+console.log(state.entities)
+
+const bugs = getBugsByUser(1)(store.getState())
+console.log(bugs)
