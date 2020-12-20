@@ -2,11 +2,13 @@ import axios from 'axios'
 import { API_CALL_FAILED, API_CALL_SUCCESS } from '../api'
 
 const api = ({ dispatch }) => (next) => async (action) => {
-  if (action.type !== 'apiCallBegan') return next(action)
+  if (action.type !== 'api/CallBegan') return next(action)
+
+  const { url, method, data, onSuccess, onError, onRequested } = action.payload
+
+  dispatch({ type: onRequested })
 
   next(action)
-
-  const { url, method, data, onSuccess, onError } = action.payload
 
   try {
     const response = await axios.request({
@@ -22,9 +24,9 @@ const api = ({ dispatch }) => (next) => async (action) => {
     if (onSuccess) dispatch({ type: onSuccess, payload: response.data })
   } catch (error) {
     // General
-    dispatch(API_CALL_FAILED(error))
+    dispatch(API_CALL_FAILED(error.message))
     // Specific
-    if (onError) dispatch({ type: onError, payload: error })
+    if (onError) dispatch({ type: onError, payload: error.message })
   }
 }
 
